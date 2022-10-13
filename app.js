@@ -94,16 +94,72 @@ const createMovingPlatform = (grid, shell, speed, size) => {
   return interval;
 };
 
-const stopPlatform = (interval) => {
+/**
+ * @desc Checks if the square underneath the coordinates given is solid
+ * @param {Object} grid
+ * @param {[Number, Number]} Coordinates of square to check
+ * @returns
+ */
+const isSquareValid = (grid, [row, col]) => {
+  if (row === grid.height - 1) return true;
+  if (grid.array[row + 1][col] === "~") return true;
+  return false;
+};
+
+/**
+ * @desc Checks given row for invalid squares and if found removes them
+ * @param {Object} grid
+ * @param {Number} row
+ * @returns true if game can continue else returns false
+ */
+const checkRow = (grid, row) => {
+  if (row === grid.height - 1) return true;
+  let canContinue = false;
+  for (let i = 0; i < grid.width; i++) {
+    if (grid.array[row][i] === "~") {
+      if (!isSquareValid(grid, [row, i])) {
+        grid.array[row][i] = "";
+      } else {
+        canContinue = true;
+      }
+    }
+  }
+  return canContinue;
+};
+
+/**
+ * @desc Advances the game to the next row and checks if the game is over
+ * @param {Object} grid
+ * @param {Element} shell
+ * @param {Interval} interval
+ */
+const nextRow = (grid, shell, interval) => {
+  grid.row--;
+  const speed = grid.game[grid.row][1];
+  const size = grid.game[grid.row][0];
+  platformInterval = createMovingPlatform(grid, shell, speed, size);
+  if (checkRow(grid, grid.row + 1)) {
+    // Game can continue
+  } else {
+    // Game over
+    console.log("Game over");
+  }
+};
+
+/**
+ * @desc Clears the interval responsible for moving the platform and advances the game to the next row
+ * @param {Object} grid
+ * @param {Element} shell
+ * @param {Interval} interval
+ */
+const stopPlatform = (grid, shell, interval) => {
   clearInterval(interval);
-  // Change the grid to blanks if they aren't over a previous platform
+  nextRow(grid, shell, interval);
 };
 
 const handleKeyboard = (event) => {
   console.log(event.key);
-  stopPlatform(platformInterval);
-  grid.row--;
-  platformInterval = createMovingPlatform(grid, app, 400, 3);
+  stopPlatform(grid, app, platformInterval);
 };
 
 document.body.addEventListener("keydown", handleKeyboard);
@@ -111,6 +167,20 @@ document.body.addEventListener("keydown", handleKeyboard);
 const app = document.getElementById("app");
 const grid = { width: 7, height: 11, row: 10 };
 grid.array = createGrid(grid.width, grid.height);
+grid.game = [
+  [3, 400],
+  [3, 350],
+  [3, 300],
+  [2, 250],
+  [2, 200],
+  [2, 150],
+  [1, 100],
+  [1, 80],
+  [1, 60],
+  [1, 40],
+  [1, 20],
+];
+grid.game = grid.game.reverse();
 
 displayGrid(grid, app);
 updateGrid(grid, app);
