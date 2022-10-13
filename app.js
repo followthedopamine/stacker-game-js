@@ -9,7 +9,7 @@ const createGrid = (cols, rows) => {
   for (let row = 0; row < rows; row++) {
     const tempRow = [];
     for (let col = 0; col < cols; col++) {
-      tempRow.push(["&nbsp;"]); // Remove this after changing ~
+      tempRow.push([""]); // Remove this after changing ~
     }
     grid.push(tempRow);
   }
@@ -64,18 +64,20 @@ const movePlatform = (grid, leftCol, platformLength) => {
     if (col >= leftCol && col < rightEdge) {
       grid.array[row][col] = "~";
     } else {
-      grid.array[row][col] = "&nbsp;";
+      grid.array[row][col] = "";
     }
   }
 };
 
 /**
  * @desc Creates a moving 1xsize platform that travels to the edge of the grid and then back again
+ * @param {Object} grid
+ * @param {Element} shell
  * @param {Number} speed Speed at which the interval ticks lower = faster platform
  * @param {Number} size Size of the platform
  * @returns The platform interval
  */
-const createMovingPlatform = (speed, size) => {
+const createMovingPlatform = (grid, shell, speed, size) => {
   let pos = 0;
   let isReversing = false;
   const interval = setInterval(() => {
@@ -87,17 +89,30 @@ const createMovingPlatform = (speed, size) => {
     }
     movePlatform(grid, pos, size);
     pos += isReversing ? -1 : 1;
-    updateGrid(grid, app);
+    updateGrid(grid, shell);
   }, speed);
   return interval;
 };
+
+const stopPlatform = (interval) => {
+  clearInterval(interval);
+  // Change the grid to blanks if they aren't over a previous platform
+};
+
+const handleKeyboard = (event) => {
+  console.log(event.key);
+  stopPlatform(platformInterval);
+  grid.row--;
+  platformInterval = createMovingPlatform(grid, app, 400, 3);
+};
+
+document.body.addEventListener("keydown", handleKeyboard);
 
 const app = document.getElementById("app");
 const grid = { width: 7, height: 11, row: 10 };
 grid.array = createGrid(grid.width, grid.height);
 
 displayGrid(grid, app);
-movePlatform(grid, 4, 3);
 updateGrid(grid, app);
 
-const platformInterval = createMovingPlatform(500, 3);
+let platformInterval = createMovingPlatform(grid, app, 500, 3);
