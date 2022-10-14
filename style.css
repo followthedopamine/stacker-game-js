@@ -25,3 +25,22 @@ body {
   border-color: #660708;
   background-color: #BA181B;
 }
+
+.notification-container {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.notification {
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  margin-top: 300px;
+  padding: 8px 20px;
+  background-color: #999;
+  border-radius: 4px;
+  display: none;
+}

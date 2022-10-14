@@ -17,6 +17,22 @@ const createGrid = (cols, rows) => {
 };
 
 /**
+ * @desc Helper function to create a container for our notifications
+ * @param {Element} shell
+ * @returns
+ */
+const createNotificationElement = (shell, debug) => {
+  const notificationContainer = document.createElement("div");
+  notificationContainer.classList.add("notification-container");
+  const notification = document.createElement("div");
+  notification.classList.add("notification");
+  if (debug) notification.innerHTML = "Test text";
+  notificationContainer.appendChild(notification);
+  shell.appendChild(notificationContainer);
+  return notification;
+};
+
+/**
  * @desc Takes a grid and appends the rows and cols to the shell
  * @param {Object} grid
  * @param {Element} shell
@@ -128,6 +144,30 @@ const checkRow = (grid, row) => {
 };
 
 /**
+ * @desc Displays the notification box set up in createNotificationElement with the given text
+ * @param {Element} shell
+ * @param {String} text The text to display in the notification
+ */
+const displayNotification = (shell, text) => {
+  shell.innerHTML = text;
+  shell.style.display = "block";
+};
+
+/**
+ * @desc Displays a notification on win or loss
+ * @param {Element} shell
+ * @param {Boolean} isWon Whether the player won the game or not
+ */
+const endGame = (shell, isWon) => {
+  if (isWon) {
+    displayNotification(shell, "You won!");
+  } else {
+    displayNotification(shell, "You lost! :(");
+  }
+  console.log("You won");
+};
+
+/**
  * @desc Advances the game to the next row and checks if the game is over
  * @param {Object} grid
  * @param {Element} shell
@@ -135,13 +175,20 @@ const checkRow = (grid, row) => {
  */
 const nextRow = (grid, shell, interval) => {
   grid.row--;
-  const speed = grid.game[grid.row][1];
-  const size = grid.game[grid.row][0];
-  platformInterval = createMovingPlatform(grid, shell, speed, size);
   if (checkRow(grid, grid.row + 1)) {
+    // Possible bug here
     // Game can continue
+    if (grid.row === -1) {
+      // Game was won
+      endGame(notification, true);
+      return;
+    }
+    const speed = grid.game[grid.row][1];
+    const size = grid.game[grid.row][0];
+    platformInterval = createMovingPlatform(grid, shell, speed, size);
   } else {
     // Game over
+    endGame(notification, false);
     console.log("Game over");
   }
 };
@@ -159,12 +206,15 @@ const stopPlatform = (grid, shell, interval) => {
 
 const handleKeyboard = (event) => {
   console.log(event.key);
-  stopPlatform(grid, app, platformInterval);
+  stopPlatform(grid, appContainer, platformInterval);
 };
 
 document.body.addEventListener("keydown", handleKeyboard);
 
 const app = document.getElementById("app");
+const notification = createNotificationElement(app, false);
+const appContainer = document.createElement("div");
+app.appendChild(appContainer);
 const grid = { width: 7, height: 11, row: 10 };
 grid.array = createGrid(grid.width, grid.height);
 grid.game = [
@@ -173,16 +223,16 @@ grid.game = [
   [3, 300],
   [2, 250],
   [2, 200],
-  [2, 150],
-  [1, 100],
-  [1, 80],
-  [1, 60],
-  [1, 40],
-  [1, 20],
+  [5, 150],
+  [5, 100],
+  [5, 100],
+  [5, 100],
+  [5, 100], // TODO: Change after debugging
+  [5, 100],
 ];
 grid.game = grid.game.reverse();
 
-displayGrid(grid, app);
-updateGrid(grid, app);
+displayGrid(grid, appContainer);
+updateGrid(grid, appContainer);
 
-let platformInterval = createMovingPlatform(grid, app, 500, 3);
+let platformInterval = createMovingPlatform(grid, appContainer, 500, 3);

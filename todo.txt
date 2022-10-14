@@ -1,0 +1,9 @@
+Win condition
+Minor win and major win grid highlights/overlay
+Replay game after win or loss
+Sounds?
+Pixel art with the grid before the game starts?
+Animation for the missed bricks?
+
+Really feeling the effects of passing all these variables instead of just using global variables.
+It's making the code a lot harder to read and modify.
