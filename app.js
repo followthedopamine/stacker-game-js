@@ -205,13 +205,20 @@ const stopPlatform = (grid, shell, interval) => {
 };
 
 const handleKeyboard = (event) => {
-  console.log(event.key);
+  console.log("Test", grid.row);
   stopPlatform(grid, appContainer, platformInterval);
 };
 
+const handleClick = (event) => {
+  handleKeyboard(event);
+};
+
 document.body.addEventListener("keydown", handleKeyboard);
+const click = document.getElementById("click");
+click.addEventListener("mousedown", handleClick);
 
 const app = document.getElementById("app");
+
 const notification = createNotificationElement(app, false);
 const appContainer = document.createElement("div");
 app.appendChild(appContainer);
