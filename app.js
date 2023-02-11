@@ -26,10 +26,16 @@ const createNotificationElement = (shell, debug) => {
   notificationContainer.classList.add("notification-container");
   const notification = document.createElement("div");
   notification.classList.add("notification");
+  // const replayLink = document.createElement("a");
+  const replayButton = document.createElement("a");
+  replayButton.innerHTML = "Replay";
+  replayButton.classList.add("replay");
+  replayButton.addEventListener("click", handleReplay);
   if (debug) notification.innerHTML = "Test text";
   notificationContainer.appendChild(notification);
+  notificationContainer.appendChild(replayButton);
   shell.appendChild(notificationContainer);
-  return notification;
+  return notificationContainer;
 };
 
 /**
@@ -149,8 +155,8 @@ const checkRow = (grid, row) => {
  * @param {String} text The text to display in the notification
  */
 const displayNotification = (shell, text) => {
-  shell.innerHTML = text;
-  shell.style.display = "block";
+  shell.firstChild.innerHTML = text;
+  shell.style.display = "flex";
 };
 
 /**
@@ -164,6 +170,8 @@ const endGame = (shell, isWon) => {
   } else {
     displayNotification(shell, "You lost! :(");
   }
+  click.removeEventListener("mousedown", handleClick);
+  document.body.removeEventListener("keydown", handleKeyboard);
   console.log("You won");
 };
 
@@ -211,6 +219,11 @@ const handleKeyboard = (event) => {
 
 const handleClick = (event) => {
   handleKeyboard(event);
+};
+
+const handleReplay = (event) => {
+  console.log("Handle replay");
+  document.location.reload();
 };
 
 document.body.addEventListener("keydown", handleKeyboard);
