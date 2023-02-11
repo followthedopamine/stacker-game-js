@@ -1,3 +1,7 @@
+/* :root {
+  --box-size: 
+} */
+
 body {
   background-color: #111;
   color: white;
@@ -21,8 +25,8 @@ body {
 .col {
   display: inline-block;
   margin: 2px;
-  width: 3vw;
-  height: 3vw;
+  width: 6vh;
+  height: 6vh;
   border: 2px solid #333;
 }
 
