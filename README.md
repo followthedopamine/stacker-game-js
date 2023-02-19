@@ -1,4 +1,4 @@
-![Animated GIF of gameplay of Stacker Game](https://media.githubusercontent.com/media/followthedopamine/stacker-game-js/main/docs/StackerGameplay.gif)
+![Animated GIF of gameplay of Stacker Game](https://raw.githubusercontent.com/followthedopamine/stacker-game-js/master/docs/StackerGameplay.gif)
 
 # Instructions
 
