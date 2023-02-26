@@ -38,6 +38,41 @@ const createNotificationElement = (shell, debug) => {
   return notificationContainer;
 };
 
+const toggleTutorialDisplay = (event) => {
+  console.log(tutorial.style.display);
+  if (tutorial.style.display == "" || tutorial.style.display == "none") {
+    tutorial.style.display = "block";
+  } else {
+    tutorial.style.display = "none";
+  }
+};
+
+const buildTutorialButton = () => {
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("tutorial-btn-container");
+  const button = document.createElement("button");
+  button.classList.add("tutorial-btn");
+  button.innerHTML = "Tutorial";
+  button.addEventListener("click", toggleTutorialDisplay);
+  buttonContainer.appendChild(button);
+  return buttonContainer;
+};
+
+const buildTutorial = () => {
+  const tutorialText = `
+  Start the game and see a row of blocks moving back and forth on a conveyor belt. <br /><br />
+  Press any key or click to stop the blocks at the right time and stack them on top of each other.<br /><br />
+  Keep stacking the blocks to reach the top of the machine.<br /><br />
+  If you miss the timing, the block will fall off the stack and the game will be over.<br /><br />
+  Retry the game if you don't reach the top.<br /><br />
+  Good luck and have fun playing the stacker game!`;
+
+  const tutorial = document.createElement("div");
+  tutorial.classList.add("tutorial");
+  tutorial.innerHTML = tutorialText;
+  return tutorial;
+};
+
 /**
  * @desc Takes a grid and appends the rows and cols to the shell
  * @param {Object} grid
@@ -234,6 +269,8 @@ const app = document.getElementById("app");
 
 const notification = createNotificationElement(app, false);
 const appContainer = document.createElement("div");
+const tutorial = buildTutorial();
+app.appendChild(tutorial);
 app.appendChild(appContainer);
 const grid = { width: 7, height: 11, row: 10 };
 grid.array = createGrid(grid.width, grid.height);
@@ -256,3 +293,5 @@ displayGrid(grid, appContainer);
 updateGrid(grid, appContainer);
 
 let platformInterval = createMovingPlatform(grid, appContainer, 500, 3);
+
+document.body.appendChild(buildTutorialButton());

@@ -5,6 +5,7 @@
 body {
   background-color: #111;
   color: white;
+  
 }
 
 #click {
@@ -68,4 +69,45 @@ body {
 
 .replay:hover {
   cursor:pointer;
+}
+
+.tutorial {
+  position: absolute;
+  display: none;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 15vw;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.2vw;
+  background-color: #111;
+  padding: 20px 40px;
+  border: 3px solid #660708;
+  background-color: #111;
+  border-radius: 7px;
+}
+
+.tutorial-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.tutorial-btn {
+  padding: 20px 40px;
+  border: 3px solid #660708;
+  background-color: transparent;
+  color: #BA181B;
+  border-radius: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tutorial-btn:hover {
+  cursor:pointer;
+  background-color: #BA181B;
+  color: #111;
 }
